@@ -1,4 +1,4 @@
-This is a Tauri empty project with Next.js frontend.
+This is a Tauri 2.1.0 empty project with Next.js frontend.
 
 To run it you just need to modify the `tauri.conf.json` file.
 First you need to change the `productName` and `identifier` fields to your project name. 
