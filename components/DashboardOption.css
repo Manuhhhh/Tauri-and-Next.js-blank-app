@@ -1,0 +1,3 @@
+.dashboard-option:not(:hover) {
+    background-color: white;
+}
