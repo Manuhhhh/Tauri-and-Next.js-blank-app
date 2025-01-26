@@ -1,0 +1,1 @@
+pub const HOST: &str = "http://localhost:3005";

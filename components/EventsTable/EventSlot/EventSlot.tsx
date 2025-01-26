@@ -1,12 +1,12 @@
 import Image from "next/image";
 
 type Props = {
-  data: Business;
+  data: DbEvent;
   onDelete?: (id: string) => void;
-  onEdit?: (data: Business) => void;
+  onEdit?: (data: DbEvent) => void;
 };
 
-export default function BusinessSlot({ data, onDelete, onEdit }: Props) {
+export default function EventSlot({ data, onDelete, onEdit }: Props) {
   console.log(data);
   return (
     <div className="flex w-full rounded-xl shadow-xl px-12 py-6 bg-slate-50 border border-slate-300">

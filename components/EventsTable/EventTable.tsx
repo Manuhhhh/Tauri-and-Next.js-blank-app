@@ -3,14 +3,14 @@ import Selector from "../Selector/Selector";
 import Image from "next/image";
 import { invoke } from "@tauri-apps/api/core";
 import { useState, useEffect } from "react";
-import BusinessSlot from "./BusinessSlot/BusinessSlot";
+import BusinessSlot from "./EventSlot/EventSlot";
 import SelectorOption from "../Selector/SelectorOption/SelectorOption";
 import DeleteWindow from "./DeleteWindow/DeleteWindow";
 import EditWindow from "./EditWindow/EditWindow";
 import Addwindow from "./AddWindow/AddWindow";
 
-export default function BusinessTable() {
-  const [businesses, setBusinesses] = useState<Business[]>([]);
+export default function EventsTable() {
+  const [events, setEvents] = useState<DbEvent[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<[string, string]>([
     "Todos",
     "",
@@ -21,7 +21,7 @@ export default function BusinessTable() {
   const [showDeleteWarning, setShowDeleteWarning] = useState<boolean>(false);
   const [deleteId, setDeleteId] = useState<string>("");
   const [updateList, setUpdateList] = useState<boolean>(false);
-  const [editData, setEditData] = useState<Business>({
+  const [editData, setEditData] = useState<DbEvent>({
     _id: "",
     title: "",
   });
@@ -33,14 +33,14 @@ export default function BusinessTable() {
     setDeleteId(id);
   };
 
-  const handleEdit = (data: Business) => {
+  const handleEdit = (data: DbEvent) => {
     setEditData(data);
     setShowEditWindow(true);
   };
 
   const
     handleDeleteTrue = async () => {
-      await invoke("delete_bus", {
+      await invoke("delete_eve", {
         id: deleteId,
         password: sessionStorage.getItem("pass") ?? "",
       });
@@ -68,12 +68,12 @@ export default function BusinessTable() {
 
   useEffect(() => {
     async function fetchBusinesses() {
-      const result = (await invoke("fetch_shops", {
+      const result = (await invoke("fetch_activities", {
         page: actualPage - 1,
         search: search,
         category: selectedCategory[1],
-      })) as ResponseBusiness;
-      setBusinesses(result.businessList);
+      })) as ResponseEvents;
+      setEvents(result.eventList);
       setTotalPages(result.pagesCount);
     }
     if (updateList) {
@@ -138,11 +138,11 @@ export default function BusinessTable() {
         </div>
       </div>
       <div className="w-full grow flex flex-col gap-2 px-4">
-        {businesses.map((business: Business, index: number) => {
+        {events.map((event: DbEvent, index: number) => {
           return (
             <BusinessSlot
               key={index}
-              data={business}
+              data={event}
               onDelete={handleDelete}
               onEdit={handleEdit}
             />

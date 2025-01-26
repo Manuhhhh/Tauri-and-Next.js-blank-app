@@ -1,10 +1,10 @@
 use reqwest::Client;
 
-pub async fn delete_business(id: String, password: String) -> Result<bool, reqwest::Error> {
+pub async fn delete_event(id: String, password: String) -> Result<bool, reqwest::Error> {
     let client = Client::new();
 
     let url = format!(
-        "{}/api/business?id={}&&password={}",
+        "{}/api/events?id={}&&password={}",
         crate::config::HOST,
         id,
         password

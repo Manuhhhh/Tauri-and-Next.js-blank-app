@@ -1,8 +1,8 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
-  "productName": "my-nextjs-tauri-app",
+  "productName": "Administrador Cámara de Comercio",
   "version": "0.1.0",
-  "identifier": "com.myapp.dev",
+  "identifier": "com.camara_comercio.dev",
   "build": {
     "frontendDist": "../out",
     "devUrl": "http://localhost:3000",
@@ -12,7 +12,7 @@
   "app": {
     "windows": [
       {
-        "title": "my-nextjs-tauri-app",
+        "title": "Administrador Cámara de Comercio",
         "width": 800,
         "height": 600,
         "resizable": true,

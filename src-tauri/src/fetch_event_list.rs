@@ -3,7 +3,7 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct Business {
+pub struct Event {
     #[serde(rename = "_id")]
     pub id: String,
     pub title: String,
@@ -20,20 +20,20 @@ pub struct Business {
 
 #[derive(Serialize, Deserialize, Debug)]
 #[serde(rename_all = "camelCase")]
-pub struct Response {
-    pub business_list: Vec<Business>,
+pub struct EventResponse {
+    pub event_list: Vec<Event>,
     pub pages_count: u32,
 }
 
-pub async fn fetch_business_list(
+pub async fn fetch_event_list(
     page: u32,
     search: String,
     category: String,
-) -> Result<Response, reqwest::Error> {
+) -> Result<EventResponse, reqwest::Error> {
     let client = Client::new();
 
     let url = format!(
-        "{}/api/business?page={}&title={}&category={}",
+        "{}/api/events?page={}&title={}&category={}",
         crate::config::HOST,
         page,
         search,
@@ -43,11 +43,11 @@ pub async fn fetch_business_list(
     let response = client.get(url).send().await?;
 
     if response.status().is_success() {
-        let result = response.json::<Response>().await?;
+        let result = response.json::<EventResponse>().await?;
         Ok(result)
     } else {
-        Ok(Response {
-            business_list: vec![],
+        Ok(EventResponse {
+            event_list: vec![],
             pages_count: 1,
         })
     }

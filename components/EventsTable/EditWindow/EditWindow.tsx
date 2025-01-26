@@ -42,14 +42,14 @@ export default function EditWindow({ data, closeWindow }: Props) {
       return;
     }
 
-    await invoke("edit_bus", {
+    await invoke("edit_eve", {
       data: editData,
     });
     closeWindow();
   };
   return (
     <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 items-center justify-center bg-white border p-4 rounded-md z-50 overflow-y-auto max-h-screen">
-      <h1 className="text-center">Editar comercio</h1>
+      <h1 className="text-center">Editar evento</h1>
       <div className="grid grid-cols-2 gap-x-2 w-full">
         <div>
           <p>Título</p>

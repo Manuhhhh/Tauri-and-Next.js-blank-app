@@ -30,9 +30,9 @@ export default function Dashboard() {
             title="Gestionar categorías"
             description="Organice y gestione las categorías de tus productos."
             icon="/categories.svg"
-            buttonText="Administrar actividades"
+            buttonText="Administrar categorías"
             color="bg-[#c21d1d]"
-            href="/activities"
+            href="/categories"
           />
         </div>
       </main>
