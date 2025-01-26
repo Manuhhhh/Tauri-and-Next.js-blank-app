@@ -3,6 +3,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { useEffect } from "react";
 import Addwindow from "./AddWindow/AddWindow";
+import { HOST } from "@/config";
+import './CategoriesTable.css';
+import ViewWindow from "./ViewWindow/ViewWindow";
+import DeleteWindow from "./DeleteWindow/DeleteWindow";
+import { invoke } from "@tauri-apps/api/core";
 
 export default function CategoriesTable() {
     const [search, setSearch] = useState<string>("");
@@ -11,6 +16,12 @@ export default function CategoriesTable() {
     const [categories, setCategories] = useState<Category[]>([]);
     const [updateTable, setUpdateTable] = useState<boolean>(false);
     const [showAddWindow, setShowAddWindow] = useState<boolean>(false);
+    const [showViewWindow, setShowViewWindow] = useState<boolean>(false);
+    const [showDeleteWindow, setShowDeleteWindow] = useState<boolean>(false);
+
+    const [deleteId, setDeleteId] = useState<string>("");
+
+    const [windowData, setWindowData] = useState<Category | null>(null);
 
     const handlePreviousPage = () => {
         if (actualPage > 1) {
@@ -24,8 +35,15 @@ export default function CategoriesTable() {
         }
     }
 
+    const handleDeleteTrue = () => {
+        setShowDeleteWindow(false);
+        setUpdateTable(true);
+
+        invoke("delete_cat", { data: { category_id: deleteId, password: sessionStorage.getItem("pass") } });
+    }
+
     useEffect(() => {
-        fetch(`http://localhost:3005/api/categories?search=${search}&page=${actualPage}`)
+        fetch(`${HOST}/api/categories?search=${search}&page=${actualPage}`)
             .then((res) => res.json())
             .then((data) => {
                 setCategories(data.categoriesList);
@@ -37,9 +55,27 @@ export default function CategoriesTable() {
         }
     }, [search, actualPage, updateTable]);
 
+    const handleView = (data: Category) => {
+        setWindowData(data);
+        setShowViewWindow(true);
+    };
+
+    const handleCloseView = () => {
+        setShowViewWindow(false);
+    }
+
     return (<div className="h-full flex flex-col">
         {
-            showAddWindow && <Addwindow closeWindow={() => setShowAddWindow(false)} />
+            showAddWindow && <Addwindow closeWindow={() => {
+                setShowAddWindow(false)
+                setUpdateTable(true)
+            }} />
+        }
+        {
+            showViewWindow && <ViewWindow data={windowData as Category} handleClose={handleCloseView} />
+        }
+        {
+            showDeleteWindow && <DeleteWindow onDeleteFalse={() => setShowDeleteWindow(false)} onDeleteTrue={handleDeleteTrue} />
         }
         <div className="w-full flex h-fit relative px-10">
             <Image
@@ -59,13 +95,32 @@ export default function CategoriesTable() {
                 }}
             />
         </div>
-        <div className="w-full flex grow flex-col items-center">
+        <div className="w-full flex grow flex-col items-center mt-12                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ">
             {
                 categories.map((category) => {
+                    const htmlSVG = { __html: category.svg_logo as TrustedHTML };
                     return (
-                        <div key={category._id.toString()} className="w-full flex justify-between items-center border-b border-slate-200 p-4">
+                        <div key={category._id.toString()} className={`w-full flex gap-2 items-center border-b border-slate-200 p-4 ${category.permanent ? 'bg-blue-600 bg-opacity-10' : ''}`}>
+                            <div dangerouslySetInnerHTML={htmlSVG} className="w-10 h-10 svg-container">
+
+                            </div>
                             <p className="text-lg">{category.name}</p>
-                            <p className="text-lg">{category.type}</p>
+
+                            <span className="mx-auto"></span>
+                            {
+                                category.permanent ? (
+                                    <div className="flex gap-2">
+                                        <button className="category-slot-button" onClick={() => { handleView(category) }}>Ver</button>
+                                    </div>) : (
+                                    <div className="flex gap-2">
+                                        <button className="category-slot-button">Editar</button>
+                                        <button className="category-slot-button" onClick={() => {
+                                            setDeleteId(category._id.toString());
+                                            setShowDeleteWindow(true);
+                                        }}>Eliminar</button>
+                                    </div>
+                                )
+                            }
                         </div>
                     );
                 })

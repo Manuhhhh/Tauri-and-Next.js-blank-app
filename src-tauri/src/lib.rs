@@ -8,6 +8,8 @@ mod fetch_business_list;
 mod fetch_event_list;
 mod verify_password;
 mod config;
+mod add_category;
+mod delete_category;
 
 use add_event::{add_event, AddEvent};
 use delete_event::delete_event;
@@ -19,6 +21,9 @@ use delete_business::delete_business;
 use edit_business::{edit_business, Business};
 use fetch_business_list::{fetch_business_list, Response};
 use verify_password::check_password;
+
+use add_category::{add_category, CategoryData};
+use delete_category::{delete_category, DeleteCategoryBody};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -32,7 +37,9 @@ pub fn run() {
             fetch_activities,
             delete_eve,
             edit_eve,
-            add_eve
+            add_eve,
+            add_cat,
+            delete_cat
         ])
         .setup(|app| {
             if cfg!(debug_assertions) {
@@ -153,6 +160,30 @@ async fn add_bus(data: AddBusiness) {
 #[tauri::command]
 async fn add_eve(data: AddEvent) {
     match add_event(data).await {
+        Ok(_) => {
+            true;
+        }
+        Err(_) => {
+            false;
+        }
+    }
+}
+
+#[tauri::command]
+async fn add_cat(data: CategoryData) {
+    match add_category(data).await {
+        Ok(_) => {
+            true;
+        }
+        Err(_) => {
+            false;
+        }
+    }
+}
+
+#[tauri::command]
+async fn delete_cat(data: DeleteCategoryBody) {
+    match delete_category(data).await {
         Ok(_) => {
             true;
         }

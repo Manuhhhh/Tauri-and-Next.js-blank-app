@@ -68,16 +68,17 @@ type ResponseEvents = {
 
 type Category = {
   type: 'business' | 'event';
-  permanent?: boolean;
-  name?: string;
+  permanent: boolean;
+  name: string;
   description?: string;
   svg_logo?: string;
   _id: ObjectId;
 }
 
 type AddCategory = {
-  type?: 'business' | 'event';
+  category_type: 'business' | 'event' | '';
   name: string;
   description?: string;
   svg_logo?: string;
+  password?: string;
 }

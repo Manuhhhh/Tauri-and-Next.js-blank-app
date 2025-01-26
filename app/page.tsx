@@ -12,6 +12,8 @@ export default function Home() {
     if (result) {
       sessionStorage.setItem("pass", password);
       window.location.href = "/dashboard";
+    } else {
+      alert("Contraseña incorrecta");
     }
   };
 
