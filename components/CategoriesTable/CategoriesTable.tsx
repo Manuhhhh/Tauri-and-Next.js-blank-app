@@ -39,7 +39,7 @@ export default function CategoriesTable() {
 
     const handleDeleteCategory = async (category: Category) => {
 
-        const response = await fetch(`${HOST}/api/categories/used-category?category_id=${category._id}&type=${category.type}`)
+        const response = await fetch(`${HOST}/api/categories/used-category?category_id=${category._id}&type=${category.type}?password=${sessionStorage.getItem("pass")}`);
         const usedData = await response.json()
 
         let message = `Esta categoría no está siendo utilizada en ningún ${category.type === "business" ? "comercio" : "evento"}`;
