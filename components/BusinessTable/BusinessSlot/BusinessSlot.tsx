@@ -24,7 +24,6 @@ export default function BusinessSlot({ data, onDelete, onEdit }: Props) {
         <p className="text-sm text-slate-600">{data.location ? data.location : ""}</p>
       </div>
       <div className="flex justify-center items-center gap-3">
-        <button className="w-fit text-nowrap text-white bg-blue-500 px-4 py-2 rounded-xl hover:bg-blue-600 transition-all duration-200">Ver</button>
         <button className="w-fit text-nowrap text-white bg-blue-500 px-4 py-2 rounded-xl hover:bg-blue-600 transition-all duration-200" onClick={() => onEdit && onEdit(data)}>Editar</button>
         <button className="w-fit text-nowrap text-white bg-blue-500 px-4 py-2 rounded-xl hover:bg-blue-600 transition-all duration-200" onClick={() => onDelete && onDelete(data._id)}>Eliminar</button>
       </div>

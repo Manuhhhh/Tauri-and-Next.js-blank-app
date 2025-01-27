@@ -33,7 +33,7 @@ export default function Addwindow({ closeWindow }: Props) {
         }
 
         if (addData.category_type === "") {
-            alert("El tipo de la categoría es obligatoria");
+            alert("El tipo de la categoría es obligatorio");
             return
         }
 

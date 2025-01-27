@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "Administrador Cámara de Comercio",
   "version": "0.1.0",
-  "identifier": "com.camara_comercio.dev",
+  "identifier": "com.camara.comercio.dev",
   "build": {
     "frontendDist": "../out",
     "devUrl": "http://localhost:3000",

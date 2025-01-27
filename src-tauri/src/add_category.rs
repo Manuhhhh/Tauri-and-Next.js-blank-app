@@ -1,7 +1,7 @@
 use reqwest::Client;
 use serde::{Deserialize, Serialize};
 
-#[derive(Debug, Deserialize, Serialize)]
+#[derive(Serialize, Deserialize)]
 pub struct CategoryData {
     pub category_type: String,
     pub description: Option<String>,

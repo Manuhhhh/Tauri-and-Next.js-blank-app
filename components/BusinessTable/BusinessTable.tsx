@@ -8,9 +8,11 @@ import SelectorOption from "../Selector/SelectorOption/SelectorOption";
 import DeleteWindow from "./DeleteWindow/DeleteWindow";
 import EditWindow from "./EditWindow/EditWindow";
 import Addwindow from "./AddWindow/AddWindow";
+import { HOST } from "@/config";
 
 export default function BusinessTable() {
   const [businesses, setBusinesses] = useState<Business[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<[string, string]>([
     "Todos",
     "",
@@ -76,10 +78,19 @@ export default function BusinessTable() {
       setBusinesses(result.businessList);
       setTotalPages(result.pagesCount);
     }
+
+    async function fetchCategories() {
+      const result = await fetch(`${HOST}/api/categories?filter=businesses`);
+      const data = await result.json();
+      const categories = data.categoriesList as Category[];
+      setCategories(categories);
+    };
+
     if (updateList) {
       setUpdateList(false);
     }
     fetchBusinesses();
+    fetchCategories();
   }, [actualPage, search, selectedCategory, updateList]);
 
   const handleCloseAddWindow = () => {
@@ -99,6 +110,7 @@ export default function BusinessTable() {
       {showEditWindow && (
         <EditWindow
           data={editData}
+          categories={categories}
           closeWindow={handleCloseWindow}
         />
       )}
@@ -106,6 +118,7 @@ export default function BusinessTable() {
       {showAddWindow && (
         <Addwindow
           closeWindow={handleCloseAddWindow}
+          categories={categories}
         />
       )}
       <div className="flex w-full gap-4 py-4 px-4 justify-between items-center">
@@ -134,6 +147,18 @@ export default function BusinessTable() {
               text="Todos"
               value=""
             />
+            {
+              categories.map((category) => {
+                return (
+                  <SelectorOption
+                    key={category._id}
+                    setState={setSelectedCategory}
+                    text={category.name}
+                    value={category._id}
+                  />
+                );
+              })
+            }
           </Selector>
         </div>
       </div>

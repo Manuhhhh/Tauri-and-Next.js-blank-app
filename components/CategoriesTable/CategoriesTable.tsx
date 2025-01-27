@@ -8,6 +8,7 @@ import './CategoriesTable.css';
 import ViewWindow from "./ViewWindow/ViewWindow";
 import DeleteWindow from "./DeleteWindow/DeleteWindow";
 import { invoke } from "@tauri-apps/api/core";
+import EditWindow from "./EditWindow/EditWindow";
 
 export default function CategoriesTable() {
     const [search, setSearch] = useState<string>("");
@@ -18,8 +19,9 @@ export default function CategoriesTable() {
     const [showAddWindow, setShowAddWindow] = useState<boolean>(false);
     const [showViewWindow, setShowViewWindow] = useState<boolean>(false);
     const [showDeleteWindow, setShowDeleteWindow] = useState<boolean>(false);
+    const [showEditWindow, setShowEditWindow] = useState<boolean>(false);
 
-    const [deleteId, setDeleteId] = useState<string>("");
+    const [deleteData, setDeleteData] = useState<[string, string]>(["", ""]);
 
     const [windowData, setWindowData] = useState<Category | null>(null);
 
@@ -35,15 +37,30 @@ export default function CategoriesTable() {
         }
     }
 
+    const handleDeleteCategory = async (category: Category) => {
+
+        const response = await fetch(`${HOST}/api/categories/used-category?category_id=${category._id}&type=${category.type}`)
+        const usedData = await response.json()
+
+        let message = `Esta categoría no está siendo utilizada en ningún ${category.type === "business" ? "comercio" : "evento"}`;
+
+        if (usedData.amount > 0) {
+            message = `Esta categoría está siendo utilizaada en ${usedData.amount} ${category.type === "business" ? "comercios" : "eventos"}`;
+        }
+
+        setDeleteData([category._id.toString(), message]);
+        setShowDeleteWindow(true);
+    }
+
     const handleDeleteTrue = () => {
         setShowDeleteWindow(false);
         setUpdateTable(true);
 
-        invoke("delete_cat", { data: { category_id: deleteId, password: sessionStorage.getItem("pass") } });
+        invoke("delete_cat", { data: { category_id: deleteData[0], password: sessionStorage.getItem("pass") } });
     }
 
     useEffect(() => {
-        fetch(`${HOST}/api/categories?search=${search}&page=${actualPage}`)
+        fetch(`${HOST}/api/categories?search=${search}&page=${actualPage - 1}`)
             .then((res) => res.json())
             .then((data) => {
                 setCategories(data.categoriesList);
@@ -75,7 +92,13 @@ export default function CategoriesTable() {
             showViewWindow && <ViewWindow data={windowData as Category} handleClose={handleCloseView} />
         }
         {
-            showDeleteWindow && <DeleteWindow onDeleteFalse={() => setShowDeleteWindow(false)} onDeleteTrue={handleDeleteTrue} />
+            showDeleteWindow && <DeleteWindow onDeleteFalse={() => setShowDeleteWindow(false)} onDeleteTrue={handleDeleteTrue} message={deleteData[1]} />
+        }
+        {
+            showEditWindow && <EditWindow data={windowData as Category} closeWindow={() => {
+                setShowEditWindow(false);
+                setUpdateTable(true);
+            }} />
         }
         <div className="w-full flex h-fit relative px-10">
             <Image
@@ -113,11 +136,13 @@ export default function CategoriesTable() {
                                         <button className="category-slot-button" onClick={() => { handleView(category) }}>Ver</button>
                                     </div>) : (
                                     <div className="flex gap-2">
-                                        <button className="category-slot-button">Editar</button>
-                                        <button className="category-slot-button" onClick={() => {
-                                            setDeleteId(category._id.toString());
-                                            setShowDeleteWindow(true);
-                                        }}>Eliminar</button>
+                                        <button className="category-slot-button" onClick={
+                                            () => {
+                                                setWindowData(category);
+                                                setShowEditWindow(true);
+                                            }
+                                        }>Editar</button>
+                                        <button className="category-slot-button" onClick={() => handleDeleteCategory(category)}>Eliminar</button>
                                     </div>
                                 )
                             }

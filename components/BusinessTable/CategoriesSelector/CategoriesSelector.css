@@ -1,0 +1,15 @@
+.svg-container {
+    width: 24px;
+    height: 24px;
+
+    path,
+    g,
+    rect,
+    circle,
+    ellipse,
+    polygon,
+    line {
+        fill: #083481 !important;
+        stroke: #083481 !important;
+    }
+}

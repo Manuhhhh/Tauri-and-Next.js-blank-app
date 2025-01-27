@@ -82,3 +82,12 @@ type AddCategory = {
   svg_logo?: string;
   password?: string;
 }
+
+type EditCategory = {
+  edit_id: string;
+  name: string;
+  description?: string;
+  svg_logo?: string;
+  type: 'business' | 'event';
+  password?: string;
+}

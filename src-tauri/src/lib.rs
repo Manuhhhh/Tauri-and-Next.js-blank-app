@@ -10,6 +10,7 @@ mod verify_password;
 mod config;
 mod add_category;
 mod delete_category;
+mod edit_category;
 
 use add_event::{add_event, AddEvent};
 use delete_event::delete_event;
@@ -24,6 +25,7 @@ use verify_password::check_password;
 
 use add_category::{add_category, CategoryData};
 use delete_category::{delete_category, DeleteCategoryBody};
+use edit_category::{EditCategory, edit_category};
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -39,7 +41,8 @@ pub fn run() {
             edit_eve,
             add_eve,
             add_cat,
-            delete_cat
+            delete_cat,
+            edit_cat
         ])
         .setup(|app| {
             if cfg!(debug_assertions) {
@@ -184,6 +187,18 @@ async fn add_cat(data: CategoryData) {
 #[tauri::command]
 async fn delete_cat(data: DeleteCategoryBody) {
     match delete_category(data).await {
+        Ok(_) => {
+            true;
+        }
+        Err(_) => {
+            false;
+        }
+    }
+}
+
+#[tauri::command]
+async fn edit_cat(data: EditCategory) {
+    match edit_category(data).await {
         Ok(_) => {
             true;
         }

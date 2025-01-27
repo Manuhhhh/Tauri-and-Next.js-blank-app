@@ -8,6 +8,7 @@ import SelectorOption from "../Selector/SelectorOption/SelectorOption";
 import DeleteWindow from "./DeleteWindow/DeleteWindow";
 import EditWindow from "./EditWindow/EditWindow";
 import Addwindow from "./AddWindow/AddWindow";
+import { HOST } from "@/config";
 
 export default function EventsTable() {
   const [events, setEvents] = useState<DbEvent[]>([]);
@@ -26,6 +27,7 @@ export default function EventsTable() {
     title: "",
   });
   const [showEditWindow, setShowEditWindow] = useState<boolean>(false);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [showAddWindow, setShowAddWindow] = useState<boolean>(false);
 
   const handleDelete = (id: string) => {
@@ -67,7 +69,7 @@ export default function EventsTable() {
   };
 
   useEffect(() => {
-    async function fetchBusinesses() {
+    async function fetchEvents() {
       const result = (await invoke("fetch_activities", {
         page: actualPage - 1,
         search: search,
@@ -76,10 +78,19 @@ export default function EventsTable() {
       setEvents(result.eventList);
       setTotalPages(result.pagesCount);
     }
+
+    async function fetchCategories() {
+          const result = await fetch(`${HOST}/api/categories?filter=events`);
+          const data = await result.json();
+          const categories = data.categoriesList as Category[];
+          setCategories(categories);
+        };
+
     if (updateList) {
       setUpdateList(false);
     }
-    fetchBusinesses();
+    fetchEvents();
+    fetchCategories();
   }, [actualPage, search, selectedCategory, updateList]);
 
   const handleCloseAddWindow = () => {
@@ -100,12 +111,14 @@ export default function EventsTable() {
         <EditWindow
           data={editData}
           closeWindow={handleCloseWindow}
+          categories={categories}
         />
       )}
 
       {showAddWindow && (
         <Addwindow
           closeWindow={handleCloseAddWindow}
+          categories={categories}
         />
       )}
       <div className="flex w-full gap-4 py-4 px-4 justify-between items-center">
