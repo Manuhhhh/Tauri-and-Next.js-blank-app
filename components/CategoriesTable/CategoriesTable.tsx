@@ -20,7 +20,6 @@ export default function CategoriesTable() {
     const [showViewWindow, setShowViewWindow] = useState<boolean>(false);
     const [showDeleteWindow, setShowDeleteWindow] = useState<boolean>(false);
     const [showEditWindow, setShowEditWindow] = useState<boolean>(false);
-
     const [deleteData, setDeleteData] = useState<[string, string]>(["", ""]);
 
     const [windowData, setWindowData] = useState<Category | null>(null);
@@ -118,7 +117,7 @@ export default function CategoriesTable() {
                 }}
             />
         </div>
-        <div className="w-full flex grow flex-col items-center mt-12                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     ">
+        <div className="w-full flex grow flex-col items-center mt-12 overflow-auto">
             {
                 categories.map((category) => {
                     const htmlSVG = { __html: category.svg_logo as TrustedHTML };

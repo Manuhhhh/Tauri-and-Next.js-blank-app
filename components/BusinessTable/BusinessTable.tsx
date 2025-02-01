@@ -162,7 +162,7 @@ export default function BusinessTable() {
           </Selector>
         </div>
       </div>
-      <div className="w-full grow flex flex-col gap-2 px-4">
+      <div className="w-full grow flex flex-col gap-2 px-4 overflow-auto">
         {businesses.map((business: Business, index: number) => {
           return (
             <BusinessSlot

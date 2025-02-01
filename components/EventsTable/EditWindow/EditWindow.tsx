@@ -131,6 +131,17 @@ export default function EditWindow({ data, closeWindow, categories }: Props) {
           />
         </div>
         <div className="col-span-2">
+          <p>Imágen de portada (URL)</p>
+          <input
+            type="text"
+            className="w-full rounded-md p-2 outline-none border text-slate-600 resize-none"
+            value={editData.image}
+            onChange={(e) =>
+              setEditData({ ...editData, image: e.target.value })
+            }
+          />
+        </div>
+        <div className="col-span-2">
           <p>Descripción corta</p>
           <textarea
             className="w-full rounded-md p-2 outline-none border h-16 text-slate-600 resize-none"

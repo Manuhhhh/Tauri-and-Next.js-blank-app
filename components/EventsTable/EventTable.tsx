@@ -150,7 +150,7 @@ export default function EventsTable() {
           </Selector>
         </div>
       </div>
-      <div className="w-full grow flex flex-col gap-2 px-4">
+      <div className="w-full grow flex flex-col gap-2 px-4 overflow-auto">
         {events.map((event: DbEvent, index: number) => {
           return (
             <BusinessSlot

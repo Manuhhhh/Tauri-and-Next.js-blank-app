@@ -53,7 +53,7 @@ export default function Addwindow({ closeWindow, categories }: Props) {
     }
 
     return (
-        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex flex-col gap-4 items-center justify-center bg-white border p-4 rounded-md z-50 overflow-y-auto max-h-screen">
+        <div className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-h-screen flex flex-col gap-4 items-center justify-center bg-white border p-4 rounded-md z-50 overflow-y-auto">
             {showCategoriesSelector && <CategoriesSelector categories={categories} handleClose={handleUpdateSelectedCategories} previouslySelectedCategories={addData.categories} />}
             <h1 className="text-center">Añadir evento</h1>
             <div className="grid grid-cols-2 gap-x-2 w-full">
@@ -118,6 +118,17 @@ export default function Addwindow({ closeWindow, categories }: Props) {
                         value={addData.openingTime}
                         onChange={(e) =>
                             setAddData({ ...addData, openingTime: e.target.value })
+                        }
+                    />
+                </div>
+                <div className="col-span-2">
+                    <p>Imágen de portada (URL)</p>
+                    <input
+                        type="text"
+                        className="w-full rounded-md p-2 outline-none border text-slate-600 resize-none"
+                        value={addData.image}
+                        onChange={(e) =>
+                            setAddData({ ...addData, image: e.target.value })
                         }
                     />
                 </div>

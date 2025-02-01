@@ -14,7 +14,7 @@ export default function ManageCategories() {
           window.location.href = "/dashboard";
         }} />
       </header>
-      <div className="w-full grow justify-center items-center">
+      <div className="w-full grow justify-center items-center overflow-hidden">
         <CategoriesTable />
       </div>
     </div>
