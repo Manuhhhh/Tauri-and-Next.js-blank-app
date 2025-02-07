@@ -4,6 +4,8 @@ import { invoke } from "@tauri-apps/api/core";
 import Image from "next/image";
 import CategoriesSelector from "../CategoriesSelector/CategoriesSelector";
 import './EditWindow.css';
+import Selector from "@/components/Selector/Selector";
+import SelectorOption from "@/components/Selector/SelectorOption/SelectorOption";
 
 type Props = {
   data: Business;
@@ -37,19 +39,23 @@ export default function EditWindow({ data, closeWindow, categories }: Props) {
     image: data.image ?? "",
     contact: data.contact ?? "",
     site: data.site ?? "",
+    zone: data.zone ?? "",
+    email: data.email ?? "",
     password: sessionStorage.getItem("pass") ?? "",
   });
+  const [selectedZone, setSelectedZone] = useState<[string, string]>(["", ""]);
 
   const [showCategoriesSelector, setShowCategoriesSelector] = useState<boolean>(false);
-
   const putEditData = async () => {
     if (editData.title === "") {
       alert("El título es el único campo obligatorio");
       return;
     }
+    
+    const data = { ...editData, zone: selectedZone[1] };
 
     await invoke("edit_bus", {
-      data: editData,
+      data: data,
     });
     closeWindow();
   };
@@ -132,7 +138,57 @@ export default function EditWindow({ data, closeWindow, categories }: Props) {
             }
           />
         </div>
-
+        <div>
+          <p>Zona</p>
+          <Selector state={selectedZone} className="md:w-1/2 lg:w-auto w-full px-2 min-w-52">
+            <SelectorOption
+              setState={setSelectedZone}
+              text={"Bahía San Blas"}
+              value={"Bahía San Blas"}
+              defaultSelected={data.zone === "Bahía San Blas"}
+            />
+            <SelectorOption
+              setState={setSelectedZone}
+              text={"Cardenal Cagliero"}
+              value={"Cardenal Cagliero"}
+              defaultSelected={data.zone === "Cardenal Cagliero"}
+            />
+            <SelectorOption
+              setState={setSelectedZone}
+              text={"Carmen de Patagones"}
+              value={"Carmen de Patagones"}
+              defaultSelected={data.zone === "Carmen de Patagones"}
+            />
+            <SelectorOption
+              setState={setSelectedZone}
+              text={"Juan A. Pradere"}
+              value={"Juan A. Pradere"}
+              defaultSelected={data.zone === "Juan A. Pradere"}
+            />
+            <SelectorOption
+              setState={setSelectedZone}
+              text={"José B. Casas"}
+              value={"José B. Casas"}
+              defaultSelected={data.zone === "José B. Casas"}
+            />
+            <SelectorOption
+              setState={setSelectedZone}
+              text={"Villa Balnearia 7 de Marzo"}
+              value={"Villa Balnearia 7 de Marzo"}
+              defaultSelected={data.zone === "Villa Balnearia 7 de Marzo"}
+            />
+            <SelectorOption
+              setState={setSelectedZone}
+              text={"Balneario Los Pocitos"}
+              value={"Balneario Los Pocitos"}
+              defaultSelected={data.zone === "Balneario Los Pocitos"}
+            />
+          </Selector>
+        </div>
+        <div>
+          <p>Email</p>
+          <input type="email" className="w-full rounded-md p-2 outline-none border text-slate-600" value={editData.email} onChange={(e) => setEditData({ ...editData, email: e.target.value })} />
+        </div>
         <div className="col-span-2">
           <p>Imágen de portada (URL)</p>
           <input

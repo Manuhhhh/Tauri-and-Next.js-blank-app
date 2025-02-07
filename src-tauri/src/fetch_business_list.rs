@@ -16,6 +16,8 @@ pub struct Business {
     pub image: Option<String>,
     pub contact: Option<String>,
     pub site: Option<String>,
+    pub zone: Option<String>,
+    pub email: Option<String>,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

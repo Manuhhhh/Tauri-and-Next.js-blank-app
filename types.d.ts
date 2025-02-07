@@ -10,6 +10,8 @@ type Business = {
   image?: string;
   contact?: string;
   site?: string;
+  zone?: string;
+  email?: string;
 };
 
 type EditBusiness = {
@@ -24,6 +26,8 @@ type EditBusiness = {
   image?: string;
   contact?: string;
   site?: string;
+  zone?: string;
+  email?: string;
   password?: string;
 }
 
@@ -44,6 +48,8 @@ type AddBusiness = {
   image?: string;
   contact?: string;
   site?: string;
+  zone?: string;
+  email?: string;
   password: string;
 };
 

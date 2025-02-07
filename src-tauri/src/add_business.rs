@@ -14,6 +14,8 @@ pub struct AddBusiness {
     pub image: Option<String>,
     pub contact: Option<String>,
     pub site: Option<String>,
+    pub zone: Option<String>,
+    pub email: Option<String>,
     pub password: String,
 }
 
@@ -21,6 +23,8 @@ pub async fn add_business(body: AddBusiness) -> Result<bool, Box<dyn std::error:
     let client = Client::new();
 
     let url = format!("{}/api/business", crate::config::HOST);
+
+    println!("{:?}", body);
 
     let response = client.put(url).json(&body).send().await?;
 

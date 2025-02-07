@@ -80,7 +80,7 @@ export default function BusinessTable() {
     }
 
     async function fetchCategories() {
-      const result = await fetch(`${HOST}/api/categories?filter=businesses`);
+      const result = await fetch(`${HOST}/api/categories?filter=business`);
       const data = await result.json();
       const categories = data.categoriesList as Category[];
       setCategories(categories);

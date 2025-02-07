@@ -80,7 +80,7 @@ export default function EventsTable() {
     }
 
     async function fetchCategories() {
-          const result = await fetch(`${HOST}/api/categories?filter=events`);
+          const result = await fetch(`${HOST}/api/categories?filter=event`);
           const data = await result.json();
           const categories = data.categoriesList as Category[];
           setCategories(categories);
